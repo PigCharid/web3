@@ -1,0 +1,100 @@
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>EIP71 TEST</title>
+
+    <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" href="./css/MINT.css">
+    <link rel="stylesheet" href="./css/bottom.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+
+
+    
+    <script src="./js/ethers_main.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/ethers_functions.js" type="text/javascript"></script>
+    <script src="./js/ethers-v4.min.js" charset="utf-8" type="text/javascript"></script>
+
+    <!--	<script src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js" type="application/javascript"></script>-->
+    <script src="https://cdn.ethers.io/lib/ethers-5.6.9.umd.min.js" type="application/javascript"></script>
+
+
+</head>
+
+<body>
+    <div id="MINT" name="mini">
+
+        <a onclick="CreateSafe()" href="javascript:;"><div id="ConnectWallet">创建保险箱</div></a>
+
+        
+        <div id="selectIdBox" >
+            <select id="selectID" onchange="change_select()"></select>
+        </div>
+        <div id="sel">
+        </div>
+        <p></p>
+        <!--<button href="javascript:;" onclick="">创建保险箱</button> -->.
+        <a id="keccak_function"></a>
+        <button class="btn btn-primary" href="javascript:;" onclick="Flexible_output_hash()">查询enocde编码</button>
+        <p></p>
+        <br>
+        <br>
+
+
+        <p></p>
+        <a>请输入此次交互合约对应操作,合约地址,ETH数额</a>
+        <p></p>
+        <a>operation</a><input type="text" id="operation"/>
+        <p></p>
+        <a>to______</a><input type="text" id="to"/>
+        <p></p>
+        <a>value   </a> <input type="text" id="value"/>
+        <button class="btn btn-primary" href="javascript:;" onclick="submit_single_data_info()">生成一笔交易完成的data</button>
+
+        <!--			<button href="javascript:;" onclick="EIP712_sign()">ECIP712签名</button>-->
+        <!--			<button href="javascript:;" onclick="ExecTransaction()">提交执行交易</button> -->
+        <div><a onclick="closeConnect()" href="javascript:;"><img style="display: none" id="cleanwallet" src="./img/close.png"></a></div>
+    </div>
+
+    <p>请上传ABI文件</p>
+    <input name="customer_file" type="file" id="files" onchange="fileImport()">
+    <p></p>
+    <button class="btn btn-primary" href="javascript:;" onclick="fileImport()">通过ABI文件查询函数</button>
+
+    <p>请输入ABI信息</p>
+    <input type="text" id="ABI_text"/>
+    <button class="btn btn-primary" href="javascript:;" onclick="submit_abi()">通过ABI查询函数</button>
+
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+
+    <div id="MINT1" name="mini">
+        <p></p>
+        <p></p>
+        <p></p>
+        <a>请输入外部合约address(非保险箱合约)</a>
+        <input type="text" id="Contract_address"/>
+        <button class="btn btn-primary" href="javascript:;" onclick="submit_signdata_info()">对单个合约交易进行提交签名信息</button>
+        <p></p>
+        <p></p>
+        <button href="javascript:;" onclick="EIP712_sign()">EIP712签名</button>
+
+        <p></p>
+        <p></p>
+        <button href="javascript:;" onclick="submit_final_sign_data()">提交multisend最后的签名data信息</button>
+
+        <p></p>
+        <p></p>
+        <button href="javascript:;" onclick="ExecTransaction()">提交执行交易</button>
+        <p></p>
+
+    </div>
+
+</body>
+
+</html>

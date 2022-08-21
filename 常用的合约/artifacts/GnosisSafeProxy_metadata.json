@@ -1,0 +1,70 @@
+{
+	"compiler": {
+		"version": "0.8.13+commit.abaa5c0e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_singleton",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			}
+		],
+		"devdoc": {
+			"author": "Stefan George - <stefan@gnosis.io>Richard Meissner - <richard@gnosis.io>",
+			"kind": "dev",
+			"methods": {
+				"constructor": {
+					"details": "Constructor function sets address of singleton contract.",
+					"params": {
+						"_singleton": "Singleton address."
+					}
+				}
+			},
+			"title": "GnosisSafeProxy - Generic proxy contract allows to execute all transactions applying the code of a master contract.",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GnosisSafeProxy.sol": "GnosisSafeProxy"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"GnosisSafeProxy.sol": {
+			"keccak256": "0x0166e91c659fd2c562cd868dad70f790b4c9c2670b79d703642d4fece6a3eccd",
+			"license": "LGPL-3.0-only",
+			"urls": [
+				"bzz-raw://6401ffa288a9184342746143f18c600e4fc1f9e74d91167c2a3ed223bd61f219",
+				"dweb:/ipfs/QmQVNSfVHP9zgTNBE2UsnLTCCzfedVL56rGaJaZnGkof2Q"
+			]
+		}
+	},
+	"version": 1
+}

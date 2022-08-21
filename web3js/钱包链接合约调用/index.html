@@ -1,0 +1,288 @@
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <script src="./web3.min.js"></script>
+    <!-- <script language="javascript" type="text/javascript" src="web3.min.js"></script> -->
+    <script src="./abiAndaddress.js"></script>
+    <script text="text/javascript">
+        
+        // 合约地址
+        const PPPPAddress = myERC20.PPPP.address;
+        console.log("PPPP的合约地址是\n",PPPPAddress)
+        // 合约的abi
+        const PPPPAbi = myERC20.PPPP.abi;
+        console.log("PPPP的合约ABI是\n",PPPPAbi)
+
+        async function metamaskConnect(){
+            //判断页面是否安装Metamask
+            if (typeof window.ethereum !== 'undefined') {
+            const ethereum = window.ethereum
+            //禁止自动刷新，metamask要求写的
+            ethereum.autoRefreshOnNetworkChange = false
+
+            try {
+                //第一次链接Metamask
+                const enable = await ethereum.enable()
+                // 这个enable由很多方法可以调用
+                console.log(enable)
+                //初始化Provider
+                const provider = window['ethereum']
+                // 下面两个是同一个对象，里面也有很多接口方法
+                console.log("metamask的ethereum",ethereum)
+                console.log("这个是metamask提供的ethereum\n",provider)
+                //获取网络ID
+                console.log(provider.chainId)
+                // 获取当前记录的账户地址
+                console.log(provider.selectedAddress)
+                //实例化Web3
+                const web3 = new Web3(provider)
+                // 通过这个provider创建的web3对象
+                console.log("这个是创建的的web3实例对象\n",web3)
+                console.log("web3对象的接口方法",web3.eth.accounts.create())
+                // 实例化合约对象
+                PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+                
+                console.log("实例化的PPPP合约对象",PPPPContract);
+                PPPPContract.methods.name().call((err,result)=>{console.log(result)})
+
+                // metamask的ethereum也有很多的接口方法 
+                ethereum.on('accountsChanged', function (enable) {
+                console.log("accountsChanged:" + enable)
+                })
+                ethereum.on('chainChanged', function (enable) {
+                console.log("chainChanged:" + networkVersion)
+                })
+            } catch (e) {
+                alert("Error:"+e);
+            }
+            } else {
+            console.log('没有metamask')
+            }
+        }
+        function getName(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            PPPPContract.methods.name().call().then(console.log);
+        }
+        function getSymbol(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            PPPPContract.methods.symbol().call().then(console.log);
+        }
+        function getDecimals(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            PPPPContract.methods.decimals().call().then(console.log);
+        }    
+        function getTotalSupply(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            PPPPContract.methods.totalSupply().call().then(console.log);
+        }
+        function getBalance(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            var address = document.getElementById("add").value;
+            console.log(address)
+            PPPPContract.methods.balanceOf(address).call().then(console.log);
+        }
+        function transfer(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            var to = document.getElementById("transfer_to").value;
+            console.log(to)
+            var value = document.getElementById("transfer_value").value;
+            console.log(value)
+            var currentAddress = PPPPContract.currentProvider.selectedAddress;
+            console.log(currentAddress)
+
+            PPPPContract.methods.transfer(to,value).send({from:currentAddress}).on('transactionHash', function(hash){
+                    console.log(hash)
+                })
+                .on('confirmation', function(confirmationNumber, receipt){
+                   
+                })
+                .on('receipt', function(receipt){
+                    // receipt 相关例子
+                   alert("转账成功")
+                    
+                    }
+                )
+                .on('error', function(error, receipt) { // 如果交易被网络拒绝并带有交易收据，则第二个参数将是交易收据。
+                   
+                });
+        }
+        function approve(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            var to = document.getElementById("approve_to").value;
+            console.log(to)
+            var value = document.getElementById("approve_value").value;
+            console.log(value)
+            var currentAddress = PPPPContract.currentProvider.selectedAddress;
+            console.log(currentAddress)
+
+            PPPPContract.methods.approve(to,value).send({from:currentAddress}).on('transactionHash', function(hash){
+                    console.log(hash)
+                })
+                .on('confirmation', function(confirmationNumber, receipt){
+                   
+                })
+                .on('receipt', function(receipt){
+                    // receipt 相关例子
+                   alert("授权成功")
+                    
+                    }
+                )
+                .on('error', function(error, receipt) { // 如果交易被网络拒绝并带有交易收据，则第二个参数将是交易收据。
+                   
+                });
+        }
+        function getAllowance(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            var owner = document.getElementById("allowance_owner").value;
+            console.log(owner)
+            var spender = document.getElementById("allowance_spender").value;
+            console.log(spender)
+            PPPPContract.methods.allowance(owner,spender).call().then(console.log);
+        }
+        function incapprove(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            var to = document.getElementById("incapprove_to").value;
+            console.log(to)
+            var value = document.getElementById("incapprove_value").value;
+            console.log(value)
+            var currentAddress = PPPPContract.currentProvider.selectedAddress;
+            console.log(currentAddress)
+
+            PPPPContract.methods.increaseAllowance(to,value).send({from:currentAddress}).on('transactionHash', function(hash){
+                    console.log(hash)
+                })
+                .on('confirmation', function(confirmationNumber, receipt){
+                   
+                })
+                .on('receipt', function(receipt){
+                    // receipt 相关例子
+                   alert("追加授权成功")
+                    
+                    }
+                )
+                .on('error', function(error, receipt) { // 如果交易被网络拒绝并带有交易收据，则第二个参数将是交易收据。
+                   
+                });
+        } 
+        function decapprove(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            var to = document.getElementById("decapprove_to").value;
+            console.log(to)
+            var value = document.getElementById("decapprove_value").value;
+            console.log(value)
+            var currentAddress = PPPPContract.currentProvider.selectedAddress;
+            console.log(currentAddress)
+
+            PPPPContract.methods.decreaseAllowance(to,value).send({from:currentAddress}).on('transactionHash', function(hash){
+                    console.log(hash)
+                })
+                .on('confirmation', function(confirmationNumber, receipt){
+                   
+                })
+                .on('receipt', function(receipt){
+                    // receipt 相关例子
+                   alert("追加授权成功")
+                    
+                    }
+                )
+                .on('error', function(error, receipt) { // 如果交易被网络拒绝并带有交易收据，则第二个参数将是交易收据。
+                   
+                });
+        }
+        function transferFrom(){
+            const web3 = new Web3(ethereum);
+            PPPPContract = new web3.eth.Contract(PPPPAbi,PPPPAddress);
+            var from = document.getElementById("transferFrom_from").value;
+            console.log(from)
+            var to = document.getElementById("transferFrom_to").value;
+            console.log(to)
+            var value = document.getElementById("transferFrom_value").value;
+            console.log(value)
+            var currentAddress = PPPPContract.currentProvider.selectedAddress;
+            console.log(currentAddress)
+
+            PPPPContract.methods.transferFrom(from,to,value).send({from:currentAddress}).on('transactionHash', function(hash){
+                    console.log(hash)
+                })
+                .on('confirmation', function(confirmationNumber, receipt){
+                   
+                })
+                .on('receipt', function(receipt){
+                    // receipt 相关例子
+                   alert("转账成功")
+                    
+                    }
+                )
+                .on('error', function(error, receipt) { // 如果交易被网络拒绝并带有交易收据，则第二个参数将是交易收据。
+                   
+                });
+        }      
+    </script>
+    
+</head>
+
+<body>
+    <div>
+        <button onclick="metamaskConnect()">链接钱包</button>
+    </div>
+    <div>
+        <button onclick="getName()">查看代币名称</button>
+    </div>
+    <div>
+        <button onclick="getSymbol()">查看代币符号</button>
+    </div>
+    <div>
+        <button onclick="getDecimals()">查看代币精度</button>
+    </div>
+    <div>
+        <button onclick="getTotalSupply()">查看代币总发行量</button>
+    </div>
+    <div>
+        <input id="add" type="text">
+        <button onclick="getBalance()">显示当前账户的PPPP余额</button>
+    </div>
+    <div>
+        转账地址：<input id="transfer_to" type="text" >
+        转账金额：<input id="transfer_value" type="text">
+        <button onclick="transfer()">发起交易</button>
+    </div>
+    <div>
+        授权地址：<input id="approve_to" type="text" >
+        授权金额：<input id="approve_value" type="text">
+        <button onclick="approve()">确认授权</button>
+    </div>
+    <div>
+        授权人：<input id="allowance_owner" type="text" >
+        被授权人：<input id="allowance_spender" type="text">
+        <button onclick="getAllowance()">查看授权数量</button>
+    </div>
+    <div>
+        授权地址：<input id="incapprove_to" type="text" >
+        追加授权金额：<input id="incapprove_value" type="text">
+        <button onclick="incapprove()">确认追加授权</button>
+    </div>
+    <div>
+        授权地址：<input id="decapprove_to" type="text" >
+        追加授权金额：<input id="decapprove_value" type="text">
+        <button onclick="decapprove()">确认减少授权</button>
+    </div>
+    <div>
+        From:<input id="transferFrom_from" type="text" >
+        To:<input id="transferFrom_to" type="text">
+        Value:<input id="transferFrom_value" type="text">
+        <button onclick="transferFrom()">发起交易</button>
+    </div>
+</body>
+
+</html>

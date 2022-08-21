@@ -1,0 +1,61 @@
+{
+	"compiler": {
+		"version": "0.8.13+commit.abaa5c0e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "masterCopy",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"author": "Richard Meissner - <richard@gnosis.io>",
+			"kind": "dev",
+			"methods": {},
+			"title": "IProxy - Helper interface to access masterCopy of the Proxy on-chain",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"GnosisSafeProxy.sol": "IProxy"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"GnosisSafeProxy.sol": {
+			"keccak256": "0x0166e91c659fd2c562cd868dad70f790b4c9c2670b79d703642d4fece6a3eccd",
+			"license": "LGPL-3.0-only",
+			"urls": [
+				"bzz-raw://6401ffa288a9184342746143f18c600e4fc1f9e74d91167c2a3ed223bd61f219",
+				"dweb:/ipfs/QmQVNSfVHP9zgTNBE2UsnLTCCzfedVL56rGaJaZnGkof2Q"
+			]
+		}
+	},
+	"version": 1
+}

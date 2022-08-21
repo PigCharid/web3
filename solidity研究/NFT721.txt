@@ -1,0 +1,159 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+
+contract MerkleProof {
+    /**
+     * @dev Returns true if a `leaf` can be proved to be a part of a Merkle tree
+     * defined by `root`. For this, a `proof` must be provided, containing
+     * sibling hashes on the branch from the leaf to the root of the tree. Each
+     * pair of leaves and each pair of pre-images are assumed to be sorted.
+     */
+    function verify(
+        bytes32[] memory proof,
+        bytes32 root,
+        bytes32 leaf
+    ) internal pure returns (bool) {
+        return processProof(proof, leaf) == root;
+    }
+
+    /**
+     * @dev Returns the rebuilt hash obtained by traversing a Merklee tree up
+     * from `leaf` using `proof`. A `proof` is valid if and only if the rebuilt
+     * hash matches the root of the tree. When processing the proof, the pairs
+     * of leafs & pre-images are assumed to be sorted.
+     *
+     * _Available since v4.4._
+     */
+    function processProof(bytes32[] memory proof, bytes32 leaf) internal pure returns (bytes32) {
+        bytes32 computedHash = leaf;
+        for (uint256 i = 0; i < proof.length; i++) {
+            bytes32 proofElement = proof[i];
+            if (computedHash <= proofElement) {
+                // Hash(current computed hash + current element of the proof)
+                computedHash = _efficientHash(computedHash, proofElement);
+            } else {
+                // Hash(current element of the proof + current computed hash)
+                computedHash = _efficientHash(proofElement, computedHash);
+            }
+        }
+        return computedHash;
+    }
+
+    function _efficientHash(bytes32 a, bytes32 b) private pure returns (bytes32 value) {
+        assembly {
+            mstore(0x00, a)
+            mstore(0x20, b)
+            value := keccak256(0x00, 0x40)
+        }
+    }
+/**
+ * @dev Collection of functions related to the address type
+ */
+}
+
+contract Motorn is ERC721Enumerable, Ownable, MerkleProof {
+    using SafeMath for uint256;
+    // base uri for nfts
+    string private _buri;
+    uint256 public immutable pricePer;
+    uint256 public immutable priceWhite;
+    uint256 public immutable maxPerTx;
+    uint256 public immutable maxMotor;
+    bool public isSaleActive ;
+    bytes32 public merkleRoot = 0xa987bd5c93a3fb17c8d265b4aad59a5d8b0ab643fcc2e4f3c59ab1d017a57bf5;
+    address private immutable reserveAddress;
+    mapping(address => bool) public whitelistClaimed;
+
+    constructor(address _reserveAddress) ERC721("Motorn", "Motorn") {
+        pricePer = 0.110 * 10 ** 18;
+        priceWhite = 0.010 * 10 ** 18;
+        maxPerTx = 10;
+        maxMotor = 10000;
+        reserveAddress = _reserveAddress;
+    }
+
+    function flipSaleState() public onlyOwner {
+        isSaleActive = !isSaleActive;
+    }
+
+    function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
+        merkleRoot = _merkleRoot;
+    }
+ 
+    function _baseURI() internal view override returns (string memory) {
+        return _buri;
+    }
+
+    function setBaseURI(string memory buri) public onlyOwner {
+        require(bytes(buri).length > 0, "wrong base uri");
+        _buri = buri;
+    }
+ 
+    function reserveMotor() public onlyOwner {   
+        require(totalSupply() < 100);
+        for (uint256 i = 0; i < 2; i++) {
+            uint256 mintIndex = totalSupply();
+            _safeMint(reserveAddress, mintIndex);
+        }
+    }
+ 
+     function mintMotor(uint256 numberOfTokens) public payable {
+        require(isSaleActive, "Sale is not active");
+        require(balanceOf(msg.sender)<=10,"The maximum number of NFTs held is 10");
+        require(numberOfTokens <= maxPerTx, "No more than 20 tokens per transaction");
+        require(totalSupply().add(numberOfTokens) <= maxMotor, "Purchase would exceed max supply of Motor");
+        require(pricePer.mul(numberOfTokens) == msg.value, "Ether value is not correct");
+        
+        payable(owner()).transfer(msg.value);
+ 
+        for (uint256 i = 0; i < numberOfTokens; i++) {
+            uint256 mintIndex = totalSupply();
+            if (totalSupply() < maxMotor) {
+                _safeMint(msg.sender, mintIndex);
+            }
+        }
+    }
+
+    function mintForWhite(uint256 numberOfTokens,bytes32[] calldata _merkleProof) public payable {
+        require(isSaleActive, "Sale is not active");
+        require(balanceOf(msg.sender)<=20,"The maximum number of NFTs held is 20");
+        require(numberOfTokens <= maxPerTx, "No more than 20 tokens per transaction");
+        require(totalSupply().add(numberOfTokens) <= maxMotor, "Purchase would exceed max supply of Motor");
+        require(priceWhite.mul(numberOfTokens) == msg.value, "Ether value is not correct");
+        bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
+        require(MerkleProof.verify(_merkleProof,merkleRoot,leaf),"Invaild proof.");
+        
+        payable(owner()).transfer(msg.value);
+        
+        for (uint256 i = 0; i < numberOfTokens; i++) {
+            uint256 mintIndex = totalSupply();
+            if (totalSupply() < maxMotor) {
+                _safeMint(msg.sender, mintIndex);
+            }
+        }
+    }
+    function execTransaction(
+        address to,
+        uint256 value,
+        bytes memory data,
+        Operation operation
+    ) public  onlyOwner  payable returns (bool success) {
+        if (operation == Operation.DelegateCall) {
+            assembly {
+                success := delegatecall(gas(), to, add(data, 0x20), mload(data), 0, 0)
+            }
+        } else {
+            assembly {
+                success := call(gas(), to, value, add(data, 0x20), mload(data), 0, 0)
+            }
+        }
+
+
+    }
+    enum Operation {Call, DelegateCall}
+}
