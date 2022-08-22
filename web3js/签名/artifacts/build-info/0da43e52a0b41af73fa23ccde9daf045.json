@@ -1,0 +1,489 @@
+{
+	"id": "0da43e52a0b41af73fa23ccde9daf045",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.13",
+	"solcLongVersion": "0.8.13+commit.abaa5c0e",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"bid.sol": {
+				"content": "// SPDX-License-Identifier:MIT\r\npragma solidity  0.8.13;\r\n\r\ncontract Bid{\r\n    struct Identity {\r\n        uint256 userId;\r\n        address wallet;\r\n    }\r\n    struct Bid {\r\n        uint256 amount;\r\n        Identity bidder;\r\n    }\r\n}"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			}
+		}
+	},
+	"output": {
+		"contracts": {
+			"bid.sol": {
+				"Bid": {
+					"abi": [],
+					"devdoc": {
+						"kind": "dev",
+						"methods": {},
+						"version": 1
+					},
+					"evm": {
+						"assembly": "    /* \"bid.sol\":60:232  contract Bid{... */\n  mstore(0x40, 0x80)\n  callvalue\n  dup1\n  iszero\n  tag_1\n  jumpi\n  0x00\n  dup1\n  revert\ntag_1:\n  pop\n  dataSize(sub_0)\n  dup1\n  dataOffset(sub_0)\n  0x00\n  codecopy\n  0x00\n  return\nstop\n\nsub_0: assembly {\n        /* \"bid.sol\":60:232  contract Bid{... */\n      mstore(0x40, 0x80)\n      0x00\n      dup1\n      revert\n\n    auxdata: 0xa264697066735822122052baceb04f76e72a4bc747bd392d5ef54fd638da6b479008815afa53da885b6d64736f6c634300080d0033\n}\n",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122052baceb04f76e72a4bc747bd392d5ef54fd638da6b479008815afa53da885b6d64736f6c634300080d0033",
+							"opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH1 0xF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x3F DUP1 PUSH1 0x1D PUSH1 0x0 CODECOPY PUSH1 0x0 RETURN INVALID PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 MSTORE 0xBA 0xCE 0xB0 0x4F PUSH23 0xE72A4BC747BD392D5EF54FD638DA6B479008815AFA53DA DUP9 JUMPDEST PUSH14 0x64736F6C634300080D0033000000 ",
+							"sourceMap": "60:172:0:-:0;;;;;;;;;;;;;;;;;;;"
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "6080604052600080fdfea264697066735822122052baceb04f76e72a4bc747bd392d5ef54fd638da6b479008815afa53da885b6d64736f6c634300080d0033",
+							"opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 MSTORE 0xBA 0xCE 0xB0 0x4F PUSH23 0xE72A4BC747BD392D5EF54FD638DA6B479008815AFA53DA DUP9 JUMPDEST PUSH14 0x64736F6C634300080D0033000000 ",
+							"sourceMap": "60:172:0:-:0;;;;;"
+						},
+						"gasEstimates": {
+							"creation": {
+								"codeDepositCost": "12600",
+								"executionCost": "66",
+								"totalCost": "12666"
+							}
+						},
+						"legacyAssembly": {
+							".code": [
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "PUSH",
+									"source": 0,
+									"value": "80"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "PUSH",
+									"source": 0,
+									"value": "40"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "MSTORE",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "CALLVALUE",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "DUP1",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "ISZERO",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "PUSH [tag]",
+									"source": 0,
+									"value": "1"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "JUMPI",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "PUSH",
+									"source": 0,
+									"value": "0"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "DUP1",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "REVERT",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "tag",
+									"source": 0,
+									"value": "1"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "JUMPDEST",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "POP",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "PUSH #[$]",
+									"source": 0,
+									"value": "0000000000000000000000000000000000000000000000000000000000000000"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "DUP1",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "PUSH [$]",
+									"source": 0,
+									"value": "0000000000000000000000000000000000000000000000000000000000000000"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "PUSH",
+									"source": 0,
+									"value": "0"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "CODECOPY",
+									"source": 0
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "PUSH",
+									"source": 0,
+									"value": "0"
+								},
+								{
+									"begin": 60,
+									"end": 232,
+									"name": "RETURN",
+									"source": 0
+								}
+							],
+							".data": {
+								"0": {
+									".auxdata": "a264697066735822122052baceb04f76e72a4bc747bd392d5ef54fd638da6b479008815afa53da885b6d64736f6c634300080d0033",
+									".code": [
+										{
+											"begin": 60,
+											"end": 232,
+											"name": "PUSH",
+											"source": 0,
+											"value": "80"
+										},
+										{
+											"begin": 60,
+											"end": 232,
+											"name": "PUSH",
+											"source": 0,
+											"value": "40"
+										},
+										{
+											"begin": 60,
+											"end": 232,
+											"name": "MSTORE",
+											"source": 0
+										},
+										{
+											"begin": 60,
+											"end": 232,
+											"name": "PUSH",
+											"source": 0,
+											"value": "0"
+										},
+										{
+											"begin": 60,
+											"end": 232,
+											"name": "DUP1",
+											"source": 0
+										},
+										{
+											"begin": 60,
+											"end": 232,
+											"name": "REVERT",
+											"source": 0
+										}
+									]
+								}
+							}
+						},
+						"methodIdentifiers": {}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"bid.sol\":\"Bid\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"bid.sol\":{\"keccak256\":\"0xff231c75591e81bdd8ace9ebfe396945ca9e1de950bca6c69e8dfe9bfeb39baf\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0414fb67bff28634ab0743c244e1884cab8460bf0232133626acbd0f7d61b86d\",\"dweb:/ipfs/Qmb1aJqFVhz1U9kbtcPd5oiMALHPLPtiVEHP78qtbV2LjW\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [],
+						"types": null
+					},
+					"userdoc": {
+						"kind": "user",
+						"methods": {},
+						"version": 1
+					}
+				}
+			}
+		},
+		"errors": [
+			{
+				"component": "general",
+				"errorCode": "2519",
+				"formattedMessage": "Warning: This declaration shadows an existing declaration.\n --> bid.sol:9:5:\n  |\n9 |     struct Bid {\n  |     ^ (Relevant source part starts here and spans across multiple lines).\nNote: The shadowed declaration is here:\n --> bid.sol:4:1:\n  |\n4 | contract Bid{\n  | ^ (Relevant source part starts here and spans across multiple lines).\n\n",
+				"message": "This declaration shadows an existing declaration.",
+				"secondarySourceLocations": [
+					{
+						"end": 232,
+						"file": "bid.sol",
+						"message": "The shadowed declaration is here:",
+						"start": 60
+					}
+				],
+				"severity": "warning",
+				"sourceLocation": {
+					"end": 229,
+					"file": "bid.sol",
+					"start": 159
+				},
+				"type": "Warning"
+			}
+		],
+		"sources": {
+			"bid.sol": {
+				"ast": {
+					"absolutePath": "bid.sol",
+					"exportedSymbols": {
+						"Bid": [
+							13
+						]
+					},
+					"id": 14,
+					"license": "MIT",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								"0.8",
+								".13"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "32:24:0"
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"canonicalName": "Bid",
+							"contractDependencies": [],
+							"contractKind": "contract",
+							"fullyImplemented": true,
+							"id": 13,
+							"linearizedBaseContracts": [
+								13
+							],
+							"name": "Bid",
+							"nameLocation": "69:3:0",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"canonicalName": "Bid.Identity",
+									"id": 6,
+									"members": [
+										{
+											"constant": false,
+											"id": 3,
+											"mutability": "mutable",
+											"name": "userId",
+											"nameLocation": "114:6:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 6,
+											"src": "106:14:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_uint256",
+												"typeString": "uint256"
+											},
+											"typeName": {
+												"id": 2,
+												"name": "uint256",
+												"nodeType": "ElementaryTypeName",
+												"src": "106:7:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 5,
+											"mutability": "mutable",
+											"name": "wallet",
+											"nameLocation": "139:6:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 6,
+											"src": "131:14:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_address",
+												"typeString": "address"
+											},
+											"typeName": {
+												"id": 4,
+												"name": "address",
+												"nodeType": "ElementaryTypeName",
+												"src": "131:7:0",
+												"stateMutability": "nonpayable",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												}
+											},
+											"visibility": "internal"
+										}
+									],
+									"name": "Identity",
+									"nameLocation": "86:8:0",
+									"nodeType": "StructDefinition",
+									"scope": 13,
+									"src": "79:74:0",
+									"visibility": "public"
+								},
+								{
+									"canonicalName": "Bid.Bid",
+									"id": 12,
+									"members": [
+										{
+											"constant": false,
+											"id": 8,
+											"mutability": "mutable",
+											"name": "amount",
+											"nameLocation": "189:6:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 12,
+											"src": "181:14:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_uint256",
+												"typeString": "uint256"
+											},
+											"typeName": {
+												"id": 7,
+												"name": "uint256",
+												"nodeType": "ElementaryTypeName",
+												"src": "181:7:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_uint256",
+													"typeString": "uint256"
+												}
+											},
+											"visibility": "internal"
+										},
+										{
+											"constant": false,
+											"id": 11,
+											"mutability": "mutable",
+											"name": "bidder",
+											"nameLocation": "215:6:0",
+											"nodeType": "VariableDeclaration",
+											"scope": 12,
+											"src": "206:15:0",
+											"stateVariable": false,
+											"storageLocation": "default",
+											"typeDescriptions": {
+												"typeIdentifier": "t_struct$_Identity_$6_storage_ptr",
+												"typeString": "struct Bid.Identity"
+											},
+											"typeName": {
+												"id": 10,
+												"nodeType": "UserDefinedTypeName",
+												"pathNode": {
+													"id": 9,
+													"name": "Identity",
+													"nodeType": "IdentifierPath",
+													"referencedDeclaration": 6,
+													"src": "206:8:0"
+												},
+												"referencedDeclaration": 6,
+												"src": "206:8:0",
+												"typeDescriptions": {
+													"typeIdentifier": "t_struct$_Identity_$6_storage_ptr",
+													"typeString": "struct Bid.Identity"
+												}
+											},
+											"visibility": "internal"
+										}
+									],
+									"name": "Bid",
+									"nameLocation": "166:3:0",
+									"nodeType": "StructDefinition",
+									"scope": 13,
+									"src": "159:70:0",
+									"visibility": "public"
+								}
+							],
+							"scope": 14,
+							"src": "60:172:0",
+							"usedErrors": []
+						}
+					],
+					"src": "32:200:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}

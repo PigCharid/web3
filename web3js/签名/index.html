@@ -2,18 +2,48 @@
 
 <head>
     <meta charset="utf-8">
-    <script src="./ethers-v4.min.js" charset="utf-8" type="text/javascript"></script>
-    <!-- <script language="javascript" type="text/javascript" src="web3.min.js"></script> -->
-    <script src="./abiAndaddress.js"></script>
-    <script src="./main.js"></script>
-    
 </head>
 
 <body>
-    <div>
-        <p>请上传ABI文件</p>
-        <input name="abifile" type="file" id="files" onchange="fileImport()">
-    </div>
+	<script src="./ethers-v4.min.js" type="application/javascript"></script>
+	<script>
+		var RPC_URL = "https://data-seed-prebsc-1-s1.binance.org:8545/"
+		var netWorkId = 97
+		async function sign(){
+
+		    const domain = {
+		        name: 'DOOMSDAY',
+		        version: '1',
+		        chainId: 97,
+		    }
+		    const types = {
+		        VerifyClaim: [
+		            {name: 'userAddress', type: 'address'},
+		            {name: 'randNo', type: 'uint256'},
+		            {name: 'amount', type: 'uint256'}
+		        ]
+		    }
+		    let _myAddress = "0xE66Eb4D3845822568938664B06b676Dc2C33a6fB"
+		    let message = {userAddress:_myAddress,randNo:"508091813966385152",amount:"100"}
+		    var provider = new ethers.providers.StaticJsonRpcProvider(RPC_URL, netWorkId);
+		    var walletSigner = provider.getSigner();
+		    this.signer = new ethers.Wallet(provider)
+			
+			console.log(this.signer);
+
+		    const signResult = await this.signer._signTypedData(domain, types, message)
+			console.log(signResult);
+		    const signature = signResult.substring(2);
+		    const r = "0x" + signature.substring(0, 64);
+		    const s = "0x" + signature.substring(64, 128);
+		    const v = parseInt(signature.substring(128, 130), 16);
+		    console.log("signature",message)
+		    console.log("v",v)
+		    console.log("s",s)
+		    console.log("r",r)
+		}
+		setTimeout(sign,1000)
+	</script>
 </body>
 
 </html>
