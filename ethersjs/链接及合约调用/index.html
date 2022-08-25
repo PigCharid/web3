@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <script src="./ethers-5.2.umd.min.js"type="application/javascript"></script>
+    <script src="./abiAndaddress.js"></script>
     <script type="application/javascript">
         async function metamaskConnect(){
             //判断页面是否安装Metamask
@@ -14,49 +15,248 @@
 
                 // 和metamask请求链接账户
                 await provider.send("eth_requestAccounts", []);
+                
 
                 // 持有metamask账户的私钥，并可以签名
                 const signer = provider.getSigner()
-                // Send 1 ether to an ens name.
-    const tx = signer.sendTransaction({
-        to: "ricmoo.firefly.eth",
-        value: ethers.utils.parseEther("1.0")
-    });
                 
+                // // 发起转币的交易
+                // Send 1 ether to an address.
+                const tx =await signer.sendTransaction({
+                    to: "0xe600f0b3e494Fe224Da13638174A59750379Eb1e",
+                    value: ethers.utils.parseEther("0.01")
+                });
+                
+                console.log(tx);
                 
             } else {
             console.log('没有metamask')
             }
         }
 
+        async function contractConnect(){
+            //判断页面是否安装Metamask
+            if (typeof window.ethereum !== 'undefined') {
+                console.log("metamask已经安装");
+                
+                // 新建一个provider
+                const provider = new ethers.providers.Web3Provider(window.ethereum)
+                console.log(provider)
+                // 和metamask请求链接账户
+                await provider.send("eth_requestAccounts", []);
+            
+                 // You can also use an ENS name for the contract address
+                const PPPPAddress = myERC20.PPPP.address;
+                console.log(PPPPAddress)
+                // The ERC-20 Contract ABI, which is a common contract interface
+                // for tokens (this is the Human-Readable ABI format)
+                const PPPPAbi = myERC20.PPPP.abi;
+                console.log(PPPPAbi)
+
+                // The Contract object
+                const PPPPContract = new ethers.Contract(PPPPAddress, PPPPAbi, provider);
+                
+                console.log(PPPPContract);
+
+                // Get the ERC-20 token name
+                name =  await PPPPContract.name()
+                console.log(name)
+                // 'Dai Stablecoin'
+
+                // Get the ERC-20 token symbol (for tickers and UIs)
+                symbol = await PPPPContract.symbol()
+                console.log(symbol)
+                // 'DAI'
+
+                // Get the balance of an address
+                balance = await PPPPContract.balanceOf("0x632a21538a3FFbf37353102cDc93551D8a5bf817")
+                console.log(balance)
+                // { BigNumber: "3118000455884268201631" }
+
+                // Format the DAI for displaying to the user
+                a =  ethers.utils.formatUnits(balance, 18)
+                console.log(a)
+                // '3118.000455884268201631'
+
+                // 下面的注释就是转账加监听事件
+                // const signer = provider.getSigner()
+
+                // const PPPPWithSigner = PPPPContract.connect(signer);
+                
+                // address = "0x632a21538a3FFbf37353102cDc93551D8a5bf817";
+                // console.log(address)
+                // PPPPWithSigner.transfer(address,1)
+
+            
+
+                // // Receive an event when ANY transfer occurs
+                // PPPPContract.on("Transfer", (from, to, amount, event) => {
+                //     console.log(`${ from } sent ${ amount } to ${ to}`);
+                //     // The event object contains the verbatim log data, the
+                //     // EventFragment and functions to fetch the block,
+                //     // transaction and receipt and event functions
+                // });
+
+                // // A filter for when a specific address receives tokens
+                // myAddress = "0x632a21538a3FFbf37353102cDc93551D8a5bf817";
+                // filter = PPPPContract.filters.Transfer(null, myAddress)
+                // // {
+                // //   address: 'dai.tokens.ethers.eth',
+                // //   topics: [
+                // //     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+                // //     null,
+                // //     '0x0000000000000000000000008ba1f109551bd432803012645ac136ddd64dba72'
+                // //   ]
+                // // }
+
+                // // Receive an event when that filter occurs
+                // PPPPContract.on(filter, (from, to, amount, event) => {
+                //     // The to will always be "address"
+                //     console.log(`I got ${ amount } from ${ from }.`);
+                // });
+
+                // Get the address of the Signer
+                const signer = provider.getSigner()
+                myAddress = await signer.getAddress()
+                // '0x8ba1f109551bD432803012645Ac136ddd64DBA72'
+                myAddress = "0x632a21538a3FFbf37353102cDc93551D8a5bf817";
+                // Filter for all token transfers from me
+                filterFrom = PPPPContract.filters.Transfer(myAddress, null);
+                console.log(filterFrom)
+                // {
+                //   address: 'dai.tokens.ethers.eth',
+                //   topics: [
+                //     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+                //     '0x0000000000000000000000008ba1f109551bd432803012645ac136ddd64dba72'
+                //   ]
+                // }
+
+                // Filter for all token transfers to me
+                filterTo = PPPPContract.filters.Transfer(null, myAddress);
+                console.log(filterTo)
+                // {
+                //   address: 'dai.tokens.ethers.eth',
+                //   topics: [
+                //     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+                //     null,
+                //     '0x0000000000000000000000008ba1f109551bd432803012645ac136ddd64dba72'
+                //   ]
+                // }
+                console.log(await provider.getBlockNumber())
+                // List all transfers sent from me in a specific block range
+                res1 =  await PPPPContract.queryFilter(filterFrom, 0, 22249417)
+                console.log("1\n",res1)
+                // [
+                //   {
+                //     address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+                //     args: [
+                //       '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
+                //       '0x8B3765eDA5207fB21690874B722ae276B96260E0',
+                //       { BigNumber: "4750000000000000000" },
+                //       amount: { BigNumber: "4750000000000000000" },
+                //       from: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
+                //       to: '0x8B3765eDA5207fB21690874B722ae276B96260E0'
+                //     ],
+                //     blockHash: '0x8462eb2fbcef5aa4861266f59ad5f47b9aa6525d767d713920fdbdfb6b0c0b78',
+                //     blockNumber: 9843476,
+                //     data: '0x00000000000000000000000000000000000000000000000041eb63d55b1b0000',
+                //     decode: [Function],
+                //     event: 'Transfer',
+                //     eventSignature: 'Transfer(address,address,uint256)',
+                //     getBlock: [Function],
+                //     getTransaction: [Function],
+                //     getTransactionReceipt: [Function],
+                //     logIndex: 69,
+                //     removeListener: [Function],
+                //     removed: false,
+                //     topics: [
+                //       '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+                //       '0x0000000000000000000000008ba1f109551bd432803012645ac136ddd64dba72',
+                //       '0x0000000000000000000000008b3765eda5207fb21690874b722ae276b96260e0'
+                //     ],
+                //     transactionHash: '0x1be23554545030e1ce47391a41098a46ff426382ed740db62d63d7676ff6fcf1',
+                //     transactionIndex: 81
+                //   },
+                //   {
+                //     address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+                //     args: [
+                //       '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
+                //       '0x00De4B13153673BCAE2616b67bf822500d325Fc3',
+                //       { BigNumber: "250000000000000000" },
+                //       amount: { BigNumber: "250000000000000000" },
+                //       from: '0x8ba1f109551bD432803012645Ac136ddd64DBA72',
+                //       to: '0x00De4B13153673BCAE2616b67bf822500d325Fc3'
+                //     ],
+                //     blockHash: '0x8462eb2fbcef5aa4861266f59ad5f47b9aa6525d767d713920fdbdfb6b0c0b78',
+                //     blockNumber: 9843476,
+                //     data: '0x00000000000000000000000000000000000000000000000003782dace9d90000',
+                //     decode: [Function],
+                //     event: 'Transfer',
+                //     eventSignature: 'Transfer(address,address,uint256)',
+                //     getBlock: [Function],
+                //     getTransaction: [Function],
+                //     getTransactionReceipt: [Function],
+                //     logIndex: 70,
+                //     removeListener: [Function],
+                //     removed: false,
+                //     topics: [
+                //       '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+                //       '0x0000000000000000000000008ba1f109551bd432803012645ac136ddd64dba72',
+                //       '0x00000000000000000000000000de4b13153673bcae2616b67bf822500d325fc3'
+                //     ],
+                //     transactionHash: '0x1be23554545030e1ce47391a41098a46ff426382ed740db62d63d7676ff6fcf1',
+                //     transactionIndex: 81
+                //   }
+                // ]
+
+                //
+                // The following have had the results omitted due to the
+                // number of entries; but they provide some useful examples
+                //
+
+                // List all transfers sent in the last 10,000 blocks
+                res2 =  await PPPPContract.queryFilter(filterFrom, -1000000000)
+                console.log("2",res2)
+
+                // List all transfers ever sent to me
+                res3 = await PPPPContract.queryFilter(filterTo)
+                console.log("1",res3)
+                
+                
+            } else {
+            console.log('没有metamask')
+            }
+            
+            
+           
+            
+        }
+
 
 
        
-        // 通过JsonRpc的URL来创建provider
-        // If you don't specify a //url//, Ethers connects to the default 
-        // (i.e. ``http:/\/localhost:8545``)
-        const provider = new ethers.providers.JsonRpcProvider("https://robin.rangersprotocol.com/api/jsonrpc");
+        // // 通过JsonRpc的URL来创建provider
+        // // If you don't specify a //url//, Ethers connects to the default 
+        // // (i.e. ``http:/\/localhost:8545``)
+        // const provider = new ethers.providers.JsonRpcProvider("https://robin.rangersprotocol.com/api/jsonrpc");
 
-        // The provider also allows signing transactions to
-        // send ether and pay to change state within the blockchain.
-        // For this, we need the account signer...
-        const signer = provider.getSigner()
+        // // The provider also allows signing transactions to
+        // // send ether and pay to change state within the blockchain.
+        // // For this, we need the account signer...
+        // const signer = provider.getSigner()
 
         
         // 获得了provider以后就能去查询链上的信息了  比如查询地址的余额啊 啥的
         // // Look up the current block number
         // await provider.getBlockNumber()
         // // 14983200
-
         // // Get the balance of an account (by address or ENS name, if supported by network)
         // balance = await provider.getBalance("ethers.eth")
         // // { BigNumber: "182826475815887608" }
-
         // // Often you need to format the output to something more user-friendly,
         // // such as in ether (instead of wei)
         // ethers.utils.formatEther(balance)
         // // '0.182826475815887608'
-
         // // If a user enters a string in an input field, you may need
         // // to convert it from ether (as a string) to wei (as a BigNumber)
         // ethers.utils.parseEther("1.0")
@@ -75,6 +275,9 @@
 <body>
     <div>
         <button onclick="metamaskConnect()">链接钱包</button>
+    </div>
+    <div>
+        <button onclick="contractConnect()">链接合约</button>
     </div>
     <div>
         <button onclick="getName()">查看代币名称</button>
